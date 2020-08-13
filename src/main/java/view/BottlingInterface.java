@@ -1,0 +1,161 @@
+package view;
+
+import entity.beerComponents.BeerComponent;
+import entity.beerPackageOperations.*;
+import entity.beerpackages.BeerPackage;
+import exception.OperationNotExistException;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Scanner;
+
+public class BottlingInterface {
+    List<BeerPackageOperation> beerPackageOperations = new ArrayList<>();
+
+    public List<BeerPackageOperation> getBeerPackageOperations() {
+        return beerPackageOperations;
+    }
+
+    public void chooseOperation() throws InterruptedException {
+        String choice;
+
+        System.out.println("Choose action:");
+        System.out.println("1. Fill 30L Keg");
+        System.out.println("2. Fill 20L Keg");
+        System.out.println("3. Fill Bottle 0.3");
+        System.out.println("4. Fill Bottle 0.5");
+        System.out.println("5. Program preview");
+        System.out.println("6. Remove Operation");
+        System.out.println("7. Change Operation");
+        System.out.println("0. Back ");
+
+        Scanner scanner = new Scanner(System.in);
+        choice = scanner.nextLine();
+        BeerPackageOperation beerPackageOperation = null;
+        switch (choice) {
+            case "1": {
+                beerPackageOperation = new FillKeg(KegVolumeEnum.THIRTY_LITERS);
+                break;
+            }
+            case "2": {
+                beerPackageOperation = new FillKeg(KegVolumeEnum.TWENTY_LITERS);
+                break;
+            }
+            case "3": {
+                beerPackageOperation = new FillBottle(BottleVolumeEnum.THREE_HUNDRED_MILLILITERS);
+                break;
+            }
+            case "4": {
+                beerPackageOperation = new FillBottle(BottleVolumeEnum.FIVE_HUNDRED_MILLILITERS);
+                break;
+            }
+            case "5":
+                printOperations();
+                break;
+            case "6":
+                try {
+                    removeOperation();
+                } catch (OperationNotExistException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case "7": {
+                try {
+                    changeOperation();
+                } catch (OperationNotExistException e) {
+                    e.printStackTrace();
+                }
+                break;
+            }
+            case "0":
+                break;
+        }
+        if (beerPackageOperation != null) {
+            beerPackageOperations.clear();
+            beerPackageOperations.add(beerPackageOperation);
+        }
+
+        if (!choice.equals("0")) {
+            chooseOperation();
+        }
+    }
+
+    public List<BeerPackage> performBottlingProgram(BeerComponent bear, double liquidVolume) throws InterruptedException {
+        List<BeerPackage> beerPackages = new ArrayList<>();
+        for (BeerPackageOperation o : beerPackageOperations) {
+             beerPackages = o.runProgram(bear, liquidVolume);
+        }
+        System.out.println();
+        System.out.println("Bottling program successfully finished");
+        System.out.println();
+        return beerPackages;
+    }
+
+    public void printOperations() {
+        beerPackageOperations.stream().forEach(o -> System.out.println(beerPackageOperations.indexOf(o) + ". " + o.toString()));
+        System.out.println();
+    }
+
+    private void removeOperation() throws OperationNotExistException {
+        int index;
+        System.out.println("Write index of operation which you want to remove:");
+        index = new Scanner(System.in).nextInt();
+        if (index >= 0 && index < beerPackageOperations.size()) {
+            beerPackageOperations.remove(index);
+        } else if (beerPackageOperations.size() == 0) {
+            System.out.println("No operation to remove");
+        } else {
+            throw new OperationNotExistException(index);
+        }
+    }
+
+    private void changeOperation() throws OperationNotExistException {
+        int index;
+        System.out.println("Write index of operation which you want to change:");
+        index = new Scanner(System.in).nextInt();
+        if (index >= 0 && index < beerPackageOperations.size()) {
+            Optional<BeerPackageOperation> newOperation = selectNewOperation();
+            if (newOperation != null) {
+                beerPackageOperations.set(index, newOperation.get());
+            } else {
+                System.out.println("Wrong operation, try again");
+            }
+        } else if (beerPackageOperations.size() == 0) {
+            System.out.println("No operation to change");
+        } else {
+            throw new OperationNotExistException(index);
+        }
+    }
+
+    private Optional<BeerPackageOperation> selectNewOperation() {
+        BeerPackageOperation beerPackageOperation = null;
+        String choice;
+        System.out.println("Write New Operation:");
+        System.out.println("1. Fill 30L Keg");
+        System.out.println("2. Fill 20L Keg");
+        System.out.println("3. Fill Bottle 0.3");
+        System.out.println("4. Fill Bottle 0.5");
+
+        choice = new Scanner(System.in).nextLine();
+        switch (choice) {
+            case "1": {
+                beerPackageOperation = new FillKeg(KegVolumeEnum.THIRTY_LITERS);
+                break;
+            }
+            case "2": {
+                beerPackageOperation = new FillKeg(KegVolumeEnum.TWENTY_LITERS);
+                break;
+            }
+            case "3": {
+                beerPackageOperation = new FillBottle(BottleVolumeEnum.THREE_HUNDRED_MILLILITERS);
+                break;
+            }
+            case "4": {
+                beerPackageOperation = new FillBottle(BottleVolumeEnum.FIVE_HUNDRED_MILLILITERS);
+                break;
+            }
+        }
+        return Optional.ofNullable(beerPackageOperation);
+    }
+}
