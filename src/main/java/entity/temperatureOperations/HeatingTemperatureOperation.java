@@ -5,15 +5,36 @@ import service.TemperatureService;
 import service.temperatureServiceImplementation.TemperatureServiceImplementation;
 
 public class HeatingTemperatureOperation extends TemperatureOperation {
-
+    Long id;
     private TemperatureService temperatureService = new TemperatureServiceImplementation();
     private String operationName = "Heating";
     private double finalTemperature;
     private double speed;
+    String operationType;
+    Long program_id;
 
-    public HeatingTemperatureOperation(double finalTemperature, double speed) {
+    public HeatingTemperatureOperation(){}
+
+    public HeatingTemperatureOperation(double finalTemperature, double speed, String operationType) {
         this.finalTemperature = finalTemperature;
         this.speed = speed;
+        this.operationType = operationType;
+    }
+
+    public HeatingTemperatureOperation(Long id, double finalTemperature, double speed, String operationType, Long program_id) {
+        this.id = id;
+        this.finalTemperature = finalTemperature;
+        this.speed = speed;
+        this.operationType = operationType;
+        this.program_id = program_id;
+    }
+
+    public void setProgram_id(Long program_id) {
+        this.program_id = program_id;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public double getFinalTemperature() {
@@ -22,6 +43,14 @@ public class HeatingTemperatureOperation extends TemperatureOperation {
 
     public double getSpeed() {
         return speed;
+    }
+
+    public Long getProgram_id() {
+        return program_id;
+    }
+
+    public String getOperationType() {
+        return operationType;
     }
 
     @Override

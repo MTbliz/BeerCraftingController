@@ -7,18 +7,47 @@ import service.bottlingServiceImplementation.BottlingServiceImplementation;
 
 import java.util.List;
 
-public class FillBottle extends BeerPackageOperation {
-
+public class FillBottleOperation extends BeerPackageOperation {
+    Long id;
     private BottlingService bottlingService = new BottlingServiceImplementation();
     private String operationName = "Bottling";
     private double volume;
+    private BottleVolumeEnum bottleVolumeEnum;
+    Long program_id;
 
-    public FillBottle(BottleVolumeEnum bottleVolumeEnum) {
+    public FillBottleOperation(){}
+
+    public FillBottleOperation(BottleVolumeEnum bottleVolumeEnum) {
+        this.bottleVolumeEnum = bottleVolumeEnum;
         this.volume = bottleVolumeEnum.getVolume();
+    }
+
+    public FillBottleOperation(Long id, BottleVolumeEnum bottleVolumeEnum, Long program_id) {
+        this.id = id;
+        this.volume = bottleVolumeEnum.getVolume();
+        this.bottleVolumeEnum = bottleVolumeEnum;
+        this.program_id = program_id;
+    }
+
+    @Override
+    public void setProgram_id(Long program_id) {
+        this.program_id = program_id;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public double getVolume() {
         return volume;
+    }
+
+    public BottleVolumeEnum getBottleVolumeEnum() {
+        return bottleVolumeEnum;
+    }
+
+    public Long getProgram_id() {
+        return program_id;
     }
 
     @Override
@@ -28,7 +57,7 @@ public class FillBottle extends BeerPackageOperation {
 
     @Override
     public List<BeerPackage> runProgram(BeerComponent beerComponent, double liquidVolume) throws InterruptedException {
-      List<BeerPackage> beerPackages = bottlingService.bottling(this.getVolume(), liquidVolume);
+        List<BeerPackage> beerPackages = bottlingService.bottling(this.getVolume(), liquidVolume);
         return beerPackages;
     }
 

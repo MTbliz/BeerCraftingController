@@ -5,8 +5,8 @@ import entity.temperatureOperations.TemperatureOperation;
 import entity.beerComponents.Beer;
 import entity.temperatureOperations.CoolingTemperatureOperation;
 import entity.temperatureOperations.HeatingTemperatureOperation;
-import entity.temperatureOperations.KeepTemperatureTemperatureOperation;
-import entity.temperatureOperations.SetTemperatureTemperatureOperation;
+import entity.temperatureOperations.KeepTemperatureOperation;
+import entity.temperatureOperations.SetTemperatureOperation;
 import exception.OperationNotExistException;
 
 import java.util.ArrayList;
@@ -15,6 +15,8 @@ import java.util.Optional;
 import java.util.Scanner;
 
 public class FermentationInterface {
+
+    String operationType = "Fermentation";
 
     List<TemperatureOperation> temperatureOperations = new ArrayList<>();
 
@@ -33,6 +35,7 @@ public class FermentationInterface {
         System.out.println("5. Program preview");
         System.out.println("6. Remove Operation");
         System.out.println("7. Change Operation");
+        System.out.println("8. Clear Program");
         System.out.println("0. Back ");
 
         Scanner scanner = new Scanner(System.in);
@@ -73,6 +76,9 @@ public class FermentationInterface {
                 }
                 break;
             }
+            case "8":
+                clearProgram();
+                break;
             case "0":
                 break;
         }
@@ -89,7 +95,7 @@ public class FermentationInterface {
         for (TemperatureOperation o : temperatureOperations) {
             wort = o.runProgram(wort);
         }
-        System.out.println("Fermentation program successfully finished");
+        System.out.println("The Fermentation program successfully finished");
         System.out.println();
         Beer beer = new Beer(wort.getLiquid());
         beer.setTemperature(wort.getTemperature());
@@ -101,11 +107,19 @@ public class FermentationInterface {
         System.out.println();
     }
 
+    public void clearProgram(){
+        temperatureOperations.clear();
+    }
+
+    public void  setTemperatureOperations(List<TemperatureOperation> operations){
+        temperatureOperations = operations;
+    }
+
     private TemperatureOperation SetInitialTemperatureOperation() {
         double temperature;
         System.out.println("Set Initial temperature (°C)");
         temperature = new Scanner(System.in).nextDouble();
-        TemperatureOperation temperatureOperation = new SetTemperatureTemperatureOperation(temperature);
+        TemperatureOperation temperatureOperation = new SetTemperatureOperation(temperature, operationType);
         return temperatureOperation;
     }
 
@@ -116,7 +130,7 @@ public class FermentationInterface {
         finalTemperature = new Scanner(System.in).nextDouble();
         System.out.println("Set speed (°C/h)");
         speed = new Scanner(System.in).nextDouble();
-        TemperatureOperation temperatureOperation = new HeatingTemperatureOperation(finalTemperature, speed);
+        TemperatureOperation temperatureOperation = new HeatingTemperatureOperation(finalTemperature, speed, operationType);
         return temperatureOperation;
     }
 
@@ -124,7 +138,7 @@ public class FermentationInterface {
         int mins;
         System.out.println("Set time to keep (mins)");
         mins = new Scanner(System.in).nextInt();
-        TemperatureOperation temperatureOperation = new KeepTemperatureTemperatureOperation(mins);
+        TemperatureOperation temperatureOperation = new KeepTemperatureOperation(mins, operationType);
         return temperatureOperation;
     }
 
@@ -135,13 +149,13 @@ public class FermentationInterface {
         finalTemperature = new Scanner(System.in).nextDouble();
         System.out.println("Set speed (°C/h)");
         speed = new Scanner(System.in).nextDouble();
-        TemperatureOperation temperatureOperation = new CoolingTemperatureOperation(finalTemperature, speed);
+        TemperatureOperation temperatureOperation = new CoolingTemperatureOperation(finalTemperature, speed, operationType);
         return temperatureOperation;
     }
 
     private void removeOperation() throws OperationNotExistException {
         int index;
-        System.out.println("Write index of operation which you want to remove:");
+        System.out.println("Write the index of the operation which you want to remove:");
         index = new Scanner(System.in).nextInt();
         if (index >= 0 && index < temperatureOperations.size()) {
             temperatureOperations.remove(index);
@@ -154,7 +168,7 @@ public class FermentationInterface {
 
     private void changeOperation() throws OperationNotExistException {
         int index;
-        System.out.println("Write index of operation which you want to change:");
+        System.out.println("Write the index of the operation which you want to change:");
         index = new Scanner(System.in).nextInt();
         if (index >= 0 && index < temperatureOperations.size()) {
             Optional<TemperatureOperation> newOperation = selectNewOperation();
@@ -173,7 +187,7 @@ public class FermentationInterface {
     private Optional<TemperatureOperation> selectNewOperation() {
         TemperatureOperation temperatureOperation = null;
         String choice;
-        System.out.println("Write New Operation:");
+        System.out.println("Write new Operation:");
         System.out.println("1. Set initial temperature");
         System.out.println("2. Heating");
         System.out.println("3. Cooling");

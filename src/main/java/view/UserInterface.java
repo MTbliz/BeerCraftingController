@@ -6,12 +6,14 @@ import entity.temperatureOperations.TemperatureOperation;
 import entity.beerComponents.Beer;
 import entity.beerComponents.Mash;
 import entity.beerComponents.Wort;
+import service.ProgramDbService;
+import service.programDbServiceImplementation.ProgramDbServiceImplementation;
 
 import java.util.List;
 import java.util.Scanner;
 
 public class UserInterface {
-
+    ProgramDbService programDbService = new ProgramDbServiceImplementation();
     IngredientInterface ingredientInterface = new IngredientInterface();
     MashingInterface mashingInterface = new MashingInterface();
     FermentationInterface fermentationInterface = new FermentationInterface();
@@ -25,12 +27,15 @@ public class UserInterface {
         String choice;
         do {
             System.out.println("Choose action:");
-            System.out.println("1. Set Liquid Volume.");
-            System.out.println("2. Plan mashing program.");
-            System.out.println("3. Plan fermentation program.");
-            System.out.println("4. Plan bottling program.");
-            System.out.println("5. Start Program.");
-            System.out.println("6. Preview Program.");
+            System.out.println("1. Set Liquid Volume");
+            System.out.println("2. Plan mashing program");
+            System.out.println("3. Plan fermentation program");
+            System.out.println("4. Plan bottling program");
+            System.out.println("5. Preview Program");
+            System.out.println("6. Start Program");
+            System.out.println("7. Clear Program");
+            System.out.println("8. Save Program");
+            System.out.println("9. Upload Program");
             System.out.println("0. Turn off ");
             Scanner scanner = new Scanner(System.in);
             choice = scanner.nextLine();
@@ -48,10 +53,26 @@ public class UserInterface {
                     bottlingInterface.chooseOperation();
                     break;
                 case "5":
-                    runProgram();
+                    previewProgram();
                     break;
                 case "6":
-                    previewProgram();
+                    runProgram();
+                    break;
+                case "7":
+                    clearProgram();
+                    break;
+                case "8":
+                    System.out.println("Write the name of the Program:");
+                    String programName = new Scanner(System.in).nextLine();
+                    saveProgram(programName);
+                    break;
+
+                case "9":
+                    List<Program> programs = getAllPrograms();
+                    programs.forEach(program -> System.out.println(program.getId() + "." + program.getProgramName()));
+                    System.out.println("Write the program id:");
+                    Long programId = new Scanner(System.in).nextLong();
+                    uploadExistingProgram(programId);
                     break;
                 case "0":
                     break;
@@ -84,15 +105,29 @@ public class UserInterface {
         }
     }
 
-    public void saveProgram() {
+    public void saveProgram(String programName) {
         List<TemperatureOperation> mashingOperations = mashingInterface.getTemperatureOperations();
         List<TemperatureOperation> fermentationOperations = fermentationInterface.getTemperatureOperations();
         List<BeerPackageOperation> beerPackageOperations = bottlingInterface.getBeerPackageOperations();
-        Program program = new Program(mashingOperations, fermentationOperations, beerPackageOperations);
-
+        Program program = new Program(programName, mashingOperations, fermentationOperations, beerPackageOperations);
+        programDbService.saveProgram(program);
     }
 
-    public void uploadExistingProgram() {
+    public void clearProgram() {
+        mashingInterface.clearProgram();
+        fermentationInterface.clearProgram();
+        bottlingInterface.clearProgram();
+    }
 
+    public void uploadExistingProgram(Long programId) {
+        clearProgram();
+        Program program = programDbService.getProgramById(programId);
+        mashingInterface.setTemperatureOperations(program.getMashingOperations());
+        fermentationInterface.setTemperatureOperations(program.getFermentationOperations());
+        bottlingInterface.setBeerPackageOperations(program.getBeerPackageOperations());
+    }
+
+    public List<Program> getAllPrograms(){
+      return programDbService.getAllPrograms();
     }
 }
