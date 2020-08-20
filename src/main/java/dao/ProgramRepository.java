@@ -8,13 +8,13 @@ import entity.temperatureOperations.*;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class ProgramRepository {
 
+    DbConnector dbConnector = new DbConnector();
     HeatingTemperatureOperationRepository heatingTemperatureOperationRepository = new HeatingTemperatureOperationRepository();
     CoolingTemperatureOperationRepository coolingTemperatureOperationRepository = new CoolingTemperatureOperationRepository();
     KeepTemperatureOperationRepository keepTemperatureOperationRepository = new KeepTemperatureOperationRepository();
@@ -27,7 +27,7 @@ public class ProgramRepository {
         String query = "SELECT id, program_name FROM programs;";
 
         try (
-                Connection connection = DbConnector.connect();
+                Connection connection = dbConnector.connect();
                 Statement statement = connection.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
         ) {
@@ -79,7 +79,7 @@ public class ProgramRepository {
         String query = "SELECT id, program_name FROM programs WHERE id = " + programId + ";";
 
         try (
-                Connection connection = DbConnector.connect();
+                Connection connection = dbConnector.connect();
                 Statement statement = connection.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
         ) {
@@ -109,7 +109,6 @@ public class ProgramRepository {
                 beerPackageOperations.addAll(fillKegOperationRepository.getAllFillKegOperationsByProgramId(id));
             }
             program = new Program(programId, programName, mashingOperations, fermentationOperations, beerPackageOperations);
-            resultSet.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -121,7 +120,7 @@ public class ProgramRepository {
                 "(program_name) " +
                 "VALUES (?);";
         try (
-                Connection connection = DbConnector.connect();
+                Connection connection = dbConnector.connect();
                 PreparedStatement statement = connection.prepareStatement(query,
                         Statement.RETURN_GENERATED_KEYS);
         ) {
@@ -173,6 +172,4 @@ public class ProgramRepository {
             fillKegOperationRepository.insertFillKegOperation((FillKegOperation) beerPackageOperation);
         }
     }
-
-
 }

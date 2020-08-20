@@ -12,7 +12,7 @@ public class DbConnector {
 
     private static String PASSWORD = "admin";
 
-    public static Connection connect(){
+    public Connection connect(){
         Connection connection = null;
         try {
           connection = DriverManager.getConnection(URL, USER, PASSWORD);

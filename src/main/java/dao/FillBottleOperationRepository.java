@@ -2,7 +2,6 @@ package dao;
 
 import entity.beerPackageOperations.BottleVolumeEnum;
 import entity.beerPackageOperations.FillBottleOperation;
-import entity.temperatureOperations.HeatingTemperatureOperation;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -10,12 +9,14 @@ import java.util.List;
 
 public class FillBottleOperationRepository {
 
+    DbConnector dbConnector = new DbConnector();
+
     public List<FillBottleOperation> getAllFillBottleOperations() {
         List<FillBottleOperation> fillBottleOperations = new ArrayList<>();
         String query = "SELECT id, operation_name, volume, bottle_volume_enum, keg_volume_enum, program_id FROM package_operations WHERE operation_name = 'Bottling';";
         try (
-                Connection connection = DbConnector.connect();
-                Statement  statement = connection.createStatement();
+                Connection connection = dbConnector.connect();
+                Statement statement = connection.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
         ) {
             while (resultSet.next()) {
@@ -38,7 +39,7 @@ public class FillBottleOperationRepository {
         String query = "SELECT id, operation_name, volume, bottle_volume_enum, keg_volume_enum, program_id FROM package_operations" +
                 " WHERE operation_name = 'Bottling' AND program_id = " + programId + ";";
         try (
-                Connection connection = DbConnector.connect();
+                Connection connection = dbConnector.connect();
                 Statement statement = connection.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
         ) {
@@ -61,7 +62,7 @@ public class FillBottleOperationRepository {
         FillBottleOperation fillBottleOperation = new FillBottleOperation();
         String query = "SELECT id, operation_name, volume, bottle_volume_enum, keg_volume_enum, program_id FROM package_operations WHERE id = " + operation_id + ";";
         try (
-                Connection connection = DbConnector.connect();
+                Connection connection = dbConnector.connect();
                 Statement statement = connection.createStatement();
                 ResultSet resultSet = statement.executeQuery(query);
         ) {
@@ -72,7 +73,6 @@ public class FillBottleOperationRepository {
                 BottleVolumeEnum bottleVolumeEnum = BottleVolumeEnum.valueOf(bottle_volume_enum);
                 fillBottleOperation = new FillBottleOperation(id, bottleVolumeEnum, program_id);
             }
-            resultSet.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -86,33 +86,17 @@ public class FillBottleOperationRepository {
         String query = "INSERT INTO PACKAGE_OPERATIONS " +
                 "(operation_name, volume, bottle_volume_enum, program_id) " +
                 "VALUES (?,?,?,?);";
-        Connection connection = DbConnector.connect();
-        PreparedStatement pstmt = null;
-        try {
-            pstmt = connection.prepareStatement(query);
+        try (
+                Connection connection = dbConnector.connect();
+                PreparedStatement pstmt = connection.prepareStatement(query);
+        ) {
             pstmt.setString(1, operationName);
             pstmt.setDouble(2, volume);
             pstmt.setString(3, bottleVolumeEnum);
             pstmt.setLong(4, fillBottleOperation.getProgram_id());
             pstmt.executeUpdate();
-            pstmt.close();
-            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            //finally block used to close resources
-            try {
-                if (pstmt != null)
-                    pstmt.close();
-            } catch (SQLException se) {
-                se.printStackTrace();
-            }
-            try {
-                if (connection != null)
-                    connection.close();
-            } catch (SQLException se) {
-                se.printStackTrace();
-            }
         }
     }
 
@@ -123,63 +107,31 @@ public class FillBottleOperationRepository {
         String query = "UPDATE PACKAGE_OPERATIONS " +
                 "SET operation_name=?, volume=?, bottle_volume_enum=? " +
                 "WHERE id = ?";
-        Connection connection = DbConnector.connect();
-        PreparedStatement pstmt = null;
-        try {
-            pstmt = connection.prepareStatement(query);
+        try (
+                Connection connection = dbConnector.connect();
+                PreparedStatement pstmt = connection.prepareStatement(query);
+        ) {
             pstmt.setString(1, operationName);
             pstmt.setDouble(2, volume);
             pstmt.setString(3, bottleVolumeEnum);
             pstmt.setLong(4, fillBottleOperation.getId());
             pstmt.executeUpdate();
-            pstmt.close();
-            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            //finally block used to close resources
-            try {
-                if (pstmt != null)
-                    pstmt.close();
-            } catch (SQLException se) {
-                se.printStackTrace();
-            }
-            try {
-                if (connection != null)
-                    connection.close();
-            } catch (SQLException se) {
-                se.printStackTrace();
-            }
         }
     }
 
     public void deleteFillBottleOperation(FillBottleOperation fillBottleOperation) {
         String query = "DELETE FROM PACKAGE_OPERATIONS " +
                 "WHERE id = ?";
-        Connection connection = DbConnector.connect();
-        PreparedStatement pstmt = null;
-        try {
-            pstmt = connection.prepareStatement(query);
+        try (
+                Connection connection = dbConnector.connect();
+                PreparedStatement pstmt = connection.prepareStatement(query);
+        ) {
             pstmt.setLong(1, fillBottleOperation.getId());
             pstmt.executeUpdate();
-            pstmt.close();
-            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            //finally block used to close resources
-            try {
-                if (pstmt != null)
-                    pstmt.close();
-            } catch (SQLException se) {
-                se.printStackTrace();
-            }
-            try {
-                if (connection != null)
-                    connection.close();
-            } catch (SQLException se) {
-                se.printStackTrace();
-            }
         }
     }
 }

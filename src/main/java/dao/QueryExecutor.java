@@ -20,10 +20,11 @@ public class QueryExecutor {
    // }
 
     public static void executeQuery(String query) {
+        DbConnector dbConnector = new DbConnector();
         Connection connection = null;
         Statement statement = null;
         try {
-            connection = DbConnector.connect();
+            connection = dbConnector.connect();
             statement = connection.createStatement();
             statement.execute(query);
         } catch (SQLException e) {
