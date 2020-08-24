@@ -10,6 +10,8 @@ import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
+import service.TemperatureService;
+import service.temperatureServiceImplementation.TemperatureServiceImplementation;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -46,8 +48,9 @@ class HeatingTemperatureOperationRepositoryTest {
 
     @BeforeEach
     public void setUp() {
+        TemperatureService temperatureService = new TemperatureServiceImplementation();
         heatingTemperatureOperations = new ArrayList<>();
-        heatingTemperatureOperation = new HeatingTemperatureOperation(1L, 1000.0, 800.0, "Mashing", 1L);
+        heatingTemperatureOperation = new HeatingTemperatureOperation(1L, 1000.0, 800.0, "Mashing", 1L, temperatureService);
         heatingTemperatureOperations.add(heatingTemperatureOperation);
     }
 

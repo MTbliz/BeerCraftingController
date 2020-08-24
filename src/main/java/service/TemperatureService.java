@@ -10,5 +10,5 @@ public interface TemperatureService {
 
     BeerComponent keepTemperature(BeerComponent beerComponent, int minutes) throws InterruptedException;
 
-    BeerComponent setTemperature(BeerComponent beerComponent, double temperature) throws InterruptedException;
+    BeerComponent setTemperature(BeerComponent beerComponent, double temperature);
 }

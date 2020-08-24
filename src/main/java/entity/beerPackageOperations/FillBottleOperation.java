@@ -3,30 +3,40 @@ package entity.beerPackageOperations;
 import entity.beerComponents.BeerComponent;
 import entity.beerpackages.BeerPackage;
 import service.BottlingService;
-import service.bottlingServiceImplementation.BottlingServiceImplementation;
 
 import java.util.List;
 
 public class FillBottleOperation extends BeerPackageOperation {
     Long id;
-    private BottlingService bottlingService = new BottlingServiceImplementation();
+    private BottlingService bottlingService;
     private String operationName = "Bottling";
     private double volume;
     private BottleVolumeEnum bottleVolumeEnum;
     Long program_id;
 
-    public FillBottleOperation(){}
-
-    public FillBottleOperation(BottleVolumeEnum bottleVolumeEnum) {
-        this.bottleVolumeEnum = bottleVolumeEnum;
-        this.volume = bottleVolumeEnum.getVolume();
+    public FillBottleOperation() {
     }
 
-    public FillBottleOperation(Long id, BottleVolumeEnum bottleVolumeEnum, Long program_id) {
+    public FillBottleOperation(BottlingService bottlingService) {
+        this.bottlingService = bottlingService;
+    }
+
+    public FillBottleOperation(BottleVolumeEnum bottleVolumeEnum, BottlingService bottlingService) {
+        this.bottleVolumeEnum = bottleVolumeEnum;
+        this.volume = bottleVolumeEnum.getVolume();
+        this.bottlingService = bottlingService;
+    }
+
+    public FillBottleOperation(Long id, BottleVolumeEnum bottleVolumeEnum, Long program_id, BottlingService bottlingService) {
         this.id = id;
         this.volume = bottleVolumeEnum.getVolume();
         this.bottleVolumeEnum = bottleVolumeEnum;
         this.program_id = program_id;
+        this.bottlingService = bottlingService;
+    }
+
+    public void setOperationName(String operationName) {
+        this.operationName = operationName;
     }
 
     @Override

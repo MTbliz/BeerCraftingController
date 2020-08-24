@@ -16,6 +16,8 @@ import java.util.List;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
+import service.TemperatureService;
+import service.temperatureServiceImplementation.TemperatureServiceImplementation;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -47,8 +49,9 @@ class CoolingTemperatureOperationRepositoryTest {
 
     @BeforeEach
     public void setUp() {
+        TemperatureService temperatureService = new TemperatureServiceImplementation();
         coolingTemperatureOperations = new ArrayList<>();
-        coolingTemperatureOperation = new CoolingTemperatureOperation(1L, 1000.0, 800.0, "Mashing", 1L);
+        coolingTemperatureOperation = new CoolingTemperatureOperation(1L, 1000.0, 800.0, "Mashing", 1L, temperatureService);
         coolingTemperatureOperations.add(coolingTemperatureOperation);
     }
 

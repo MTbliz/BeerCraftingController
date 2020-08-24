@@ -24,6 +24,6 @@ public abstract class TemperatureOperation {
         this.program_id = program_id;
     }
 
-    public abstract BeerComponent runProgram(BeerComponent beerComponent) throws  InterruptedException;
-    }
+    public abstract BeerComponent runProgram(BeerComponent beerComponent) throws InterruptedException;
+}
 

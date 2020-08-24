@@ -1,7 +1,8 @@
 
 import dao.QueryExecutor;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import view.UserInterface;
-
 
 
 public class Main {
@@ -33,7 +34,9 @@ public class Main {
                 " program_id INTEGER);";
         QueryExecutor.executeQuery(createPackageOperationsTable);
 
-
-        UserInterface userInterface = new UserInterface();
+        ApplicationContext ctx = new
+                ClassPathXmlApplicationContext("beans.xml");
+        UserInterface userInterface = ctx.getBean(UserInterface.class);
+        userInterface.chooseAction();
     }
 }

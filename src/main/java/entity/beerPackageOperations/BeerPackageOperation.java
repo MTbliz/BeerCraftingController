@@ -23,6 +23,6 @@ public abstract class BeerPackageOperation {
         this.program_id = program_id;
     }
 
-    public abstract List<BeerPackage> runProgram(BeerComponent beerComponent, double liquidVolume) throws  InterruptedException;
+    public abstract List<BeerPackage> runProgram(BeerComponent beerComponent, double liquidVolume) throws InterruptedException;
 }
 

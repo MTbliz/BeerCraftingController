@@ -3,30 +3,36 @@ package entity.beerPackageOperations;
 import entity.beerComponents.BeerComponent;
 import entity.beerpackages.BeerPackage;
 import service.KeggingService;
-import service.keggingServiceImplementation.KeggingServiceImplementation;
 
 import java.util.List;
 
 public class FillKegOperation extends BeerPackageOperation {
     Long id;
-    private KeggingService keggingService = new KeggingServiceImplementation();
+    private KeggingService keggingService;
     private String operationName = "Kegging";
     private double volume;
     private KegVolumeEnum kegVolumeEnum;
     Long program_id;
 
-    public FillKegOperation(){}
-
-    public FillKegOperation(KegVolumeEnum kegVolumeEnum) {
-        this.volume = kegVolumeEnum.getVolume();
-        this.kegVolumeEnum = kegVolumeEnum;
+    public FillKegOperation() {
     }
 
-    public FillKegOperation(Long id, KegVolumeEnum kegVolumeEnum, Long program_id) {
+    public FillKegOperation(KeggingService keggingService) {
+        this.keggingService = keggingService;
+    }
+
+    public FillKegOperation(KegVolumeEnum kegVolumeEnum, KeggingService keggingService) {
+        this.volume = kegVolumeEnum.getVolume();
+        this.kegVolumeEnum = kegVolumeEnum;
+        this.keggingService = keggingService;
+    }
+
+    public FillKegOperation(Long id, KegVolumeEnum kegVolumeEnum, Long program_id, KeggingService keggingService) {
         this.id = id;
         this.volume = kegVolumeEnum.getVolume();
         this.kegVolumeEnum = kegVolumeEnum;
         this.program_id = program_id;
+        this.keggingService = keggingService;
     }
 
     @Override

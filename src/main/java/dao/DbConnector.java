@@ -12,11 +12,11 @@ public class DbConnector {
 
     private static String PASSWORD = "admin";
 
-    public Connection connect(){
+    public Connection connect() {
         Connection connection = null;
         try {
-          connection = DriverManager.getConnection(URL, USER, PASSWORD);
-        } catch (SQLException  e) {
+            connection = DriverManager.getConnection(URL, USER, PASSWORD);
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return connection;

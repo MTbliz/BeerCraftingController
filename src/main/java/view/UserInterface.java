@@ -19,11 +19,22 @@ public class UserInterface {
     FermentationInterface fermentationInterface = new FermentationInterface();
     BottlingInterface bottlingInterface = new BottlingInterface();
 
-    public UserInterface() throws InterruptedException {
-        chooseAction();
+    public UserInterface(ProgramDbService programDbService,
+                         IngredientInterface ingredientInterface,
+                         MashingInterface mashingInterface,
+                         FermentationInterface fermentationInterface,
+                         BottlingInterface bottlingInterface) {
+        this.programDbService = programDbService;
+        this.ingredientInterface = ingredientInterface;
+        this.mashingInterface = mashingInterface;
+        this.fermentationInterface = fermentationInterface;
+        this.bottlingInterface = bottlingInterface;
     }
 
-    private void chooseAction() throws InterruptedException {
+    public UserInterface() throws InterruptedException {
+    }
+
+    public void chooseAction() throws InterruptedException {
         String choice;
         do {
             System.out.println("Choose action:");
@@ -127,7 +138,7 @@ public class UserInterface {
         bottlingInterface.setBeerPackageOperations(program.getBeerPackageOperations());
     }
 
-    public List<Program> getAllPrograms(){
-      return programDbService.getAllPrograms();
+    public List<Program> getAllPrograms() {
+        return programDbService.getAllPrograms();
     }
 }

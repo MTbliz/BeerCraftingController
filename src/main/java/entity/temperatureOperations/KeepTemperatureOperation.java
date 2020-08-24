@@ -2,11 +2,10 @@ package entity.temperatureOperations;
 
 import entity.beerComponents.BeerComponent;
 import service.TemperatureService;
-import service.temperatureServiceImplementation.TemperatureServiceImplementation;
 
 public class KeepTemperatureOperation extends TemperatureOperation {
     Long id;
-    private TemperatureService temperatureService = new TemperatureServiceImplementation();
+    private TemperatureService temperatureService;
     private String operationName = "KeepTemperature";
     private int minutes;
     String operationType;
@@ -15,16 +14,26 @@ public class KeepTemperatureOperation extends TemperatureOperation {
     public KeepTemperatureOperation() {
     }
 
-    public KeepTemperatureOperation(Long id, int minutes, String operationType, Long program_id) {
+    public KeepTemperatureOperation(TemperatureService temperatureService) {
+        this.temperatureService = temperatureService;
+    }
+
+    public KeepTemperatureOperation(Long id, int minutes, String operationType, Long program_id, TemperatureService temperatureService) {
         this.operationType = operationType;
         this.id = id;
         this.minutes = minutes;
         this.program_id = program_id;
+        this.temperatureService = temperatureService;
     }
 
-    public KeepTemperatureOperation(int minutes, String operationType) {
+    public KeepTemperatureOperation(int minutes, String operationType, TemperatureService temperatureService) {
         this.minutes = minutes;
         this.operationType = operationType;
+        this.temperatureService = temperatureService;
+    }
+
+    public void setOperationName(String operationName) {
+        this.operationName = operationName;
     }
 
     public void setProgram_id(Long program_id) {

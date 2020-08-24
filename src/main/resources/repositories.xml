@@ -1,0 +1,52 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <bean id="dbConnector" class="dao.DbConnector"></bean>
+
+    <bean id="coolingTemperatureOperationRepository" class="dao.CoolingTemperatureOperationRepository">
+        <constructor-arg ref="dbConnector"/>
+        <constructor-arg ref="temperatureService"/>
+    </bean>
+
+    <bean id="fillBottleOperationRepository" class="dao.FillBottleOperationRepository">
+        <constructor-arg ref="dbConnector"/>
+        <constructor-arg ref="bottlingService"/>
+    </bean>
+
+    <bean id="fillKegOperationRepository" class="dao.FillKegOperationRepository">
+        <constructor-arg ref="dbConnector"/>
+        <constructor-arg ref="keggingService"/>
+    </bean>
+
+    <bean id="heatingTemperatureOperationRepository" class="dao.HeatingTemperatureOperationRepository">
+        <constructor-arg ref="dbConnector"/>
+        <constructor-arg ref="temperatureService"/>
+    </bean>
+
+    <bean id="keepTemperatureOperationRepository" class="dao.KeepTemperatureOperationRepository">
+        <constructor-arg ref="dbConnector"/>
+        <constructor-arg ref="temperatureService"/>
+    </bean>
+
+    <bean id="setTemperatureOperationRepository" class="dao.SetTemperatureOperationRepository">
+        <constructor-arg ref="dbConnector"/>
+        <constructor-arg ref="temperatureService"/>
+    </bean>
+
+    <bean id="queryExecutor" class="dao.QueryExecutor"></bean>
+
+    <bean id="programRepository" class="dao.ProgramRepository">
+        <constructor-arg ref="dbConnector"/>
+        <constructor-arg ref="coolingTemperatureOperationRepository"/>
+        <constructor-arg ref="heatingTemperatureOperationRepository"/>
+        <constructor-arg ref="keepTemperatureOperationRepository"/>
+        <constructor-arg ref="setTemperatureOperationRepository"/>
+        <constructor-arg ref="fillBottleOperationRepository"/>
+        <constructor-arg ref="fillKegOperationRepository"/>
+    </bean>
+</beans>

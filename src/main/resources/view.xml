@@ -1,0 +1,27 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <bean id="bottlingInterface" class="view.BottlingInterface">
+        <constructor-arg ref="bottlingService"/>
+        <constructor-arg ref="keggingService"/>
+    </bean>
+    <bean id="fermentationInterface" class="view.FermentationInterface">
+        <constructor-arg ref="temperatureService"/>
+    </bean>
+    <bean id="ingredientInterface" class="view.IngredientInterface"></bean>
+    <bean id="mashingInterface" class="view.MashingInterface">
+        <constructor-arg ref="temperatureService"/>
+    </bean>
+    <bean id="userInterface" class="view.UserInterface">
+        <constructor-arg ref="bottlingInterface"/>
+        <constructor-arg ref="fermentationInterface"/>
+        <constructor-arg ref="ingredientInterface"/>
+        <constructor-arg ref="mashingInterface"/>
+        <constructor-arg ref="programDbService"/>
+    </bean>
+</beans>

@@ -1,6 +1,7 @@
 package dao;
 
 import entity.temperatureOperations.KeepTemperatureOperation;
+import service.TemperatureService;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -8,7 +9,17 @@ import java.util.List;
 
 public class KeepTemperatureOperationRepository {
 
-    DbConnector dbConnector = new DbConnector();
+    DbConnector dbConnector;
+
+    TemperatureService temperatureService;
+
+    public KeepTemperatureOperationRepository() {
+    }
+
+    public KeepTemperatureOperationRepository(DbConnector dbConnector, TemperatureService temperatureService) {
+        this.dbConnector = dbConnector;
+        this.temperatureService = temperatureService;
+    }
 
     public List<KeepTemperatureOperation> getAllKeepTemperatureOperations() {
         List<KeepTemperatureOperation> keepTemperatureOperations = new ArrayList<>();
@@ -24,7 +35,7 @@ public class KeepTemperatureOperationRepository {
                 int minutes = resultSet.getInt("minutes");
                 String operationType = resultSet.getString("operation_type");
                 Long program_id = resultSet.getLong("program_id");
-                keepTemperatureOperation = new KeepTemperatureOperation(id, minutes, operationType, program_id);
+                keepTemperatureOperation = new KeepTemperatureOperation(id, minutes, operationType, program_id, temperatureService);
                 keepTemperatureOperations.add(keepTemperatureOperation);
             }
         } catch (SQLException e) {
@@ -48,7 +59,7 @@ public class KeepTemperatureOperationRepository {
                 int minutes = resultSet.getInt("minutes");
                 String operationType = resultSet.getString("operation_type");
                 Long program_id = resultSet.getLong("program_id");
-                keepTemperatureOperation = new KeepTemperatureOperation(id, minutes, operationType, program_id);
+                keepTemperatureOperation = new KeepTemperatureOperation(id, minutes, operationType, program_id, temperatureService);
                 keepTemperatureOperations.add(keepTemperatureOperation);
             }
         } catch (SQLException e) {
@@ -70,7 +81,7 @@ public class KeepTemperatureOperationRepository {
                 int minutes = resultSet.getInt("minutes");
                 String operationType = resultSet.getString("operation_type");
                 Long program_id = resultSet.getLong("program_id");
-                keepTemperatureOperation = new KeepTemperatureOperation(id, minutes, operationType, program_id);
+                keepTemperatureOperation = new KeepTemperatureOperation(id, minutes, operationType, program_id, temperatureService);
             }
         } catch (SQLException e) {
             e.printStackTrace();

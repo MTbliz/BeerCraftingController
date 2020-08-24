@@ -1,7 +1,6 @@
 package view;
 
 import entity.beerComponents.BeerComponent;
-import entity.beerPackageOperations.BeerPackageOperation;
 import entity.temperatureOperations.TemperatureOperation;
 import entity.beerComponents.Wort;
 import entity.temperatureOperations.CoolingTemperatureOperation;
@@ -9,6 +8,7 @@ import entity.temperatureOperations.HeatingTemperatureOperation;
 import entity.temperatureOperations.KeepTemperatureOperation;
 import entity.temperatureOperations.SetTemperatureOperation;
 import exception.OperationNotExistException;
+import service.TemperatureService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,16 @@ public class MashingInterface {
 
     String operationType = "Mashing";
 
+    TemperatureService temperatureService;
+
     List<TemperatureOperation> temperatureOperations = new ArrayList<>();
+
+    public MashingInterface() {
+    }
+
+    public MashingInterface(TemperatureService temperatureService) {
+        this.temperatureService = temperatureService;
+    }
 
     public List<TemperatureOperation> getTemperatureOperations() {
         return temperatureOperations;
@@ -109,11 +118,11 @@ public class MashingInterface {
         System.out.println();
     }
 
-    public void clearProgram(){
+    public void clearProgram() {
         temperatureOperations.clear();
     }
 
-    public void  setTemperatureOperations(List<TemperatureOperation> operations){
+    public void setTemperatureOperations(List<TemperatureOperation> operations) {
         temperatureOperations = operations;
     }
 
@@ -121,7 +130,7 @@ public class MashingInterface {
         double temperature;
         System.out.println("Set Initial temperature (°C)");
         temperature = new Scanner(System.in).nextDouble();
-        TemperatureOperation temperatureOperation = new SetTemperatureOperation(temperature, operationType);
+        TemperatureOperation temperatureOperation = new SetTemperatureOperation(temperature, operationType, temperatureService);
         return temperatureOperation;
     }
 
@@ -132,7 +141,7 @@ public class MashingInterface {
         finalTemperature = new Scanner(System.in).nextDouble();
         System.out.println("Set speed (°C/h)");
         speed = new Scanner(System.in).nextDouble();
-        TemperatureOperation temperatureOperation = new HeatingTemperatureOperation(finalTemperature, speed, operationType);
+        TemperatureOperation temperatureOperation = new HeatingTemperatureOperation(finalTemperature, speed, operationType, temperatureService);
         return temperatureOperation;
     }
 
@@ -140,7 +149,7 @@ public class MashingInterface {
         int mins;
         System.out.println("Set time to keep (mins)");
         mins = new Scanner(System.in).nextInt();
-        TemperatureOperation temperatureOperation = new KeepTemperatureOperation(mins, operationType);
+        TemperatureOperation temperatureOperation = new KeepTemperatureOperation(mins, operationType, temperatureService);
         return temperatureOperation;
     }
 
@@ -151,7 +160,7 @@ public class MashingInterface {
         finalTemperature = new Scanner(System.in).nextDouble();
         System.out.println("Set speed (°C/h)");
         speed = new Scanner(System.in).nextDouble();
-        TemperatureOperation temperatureOperation = new CoolingTemperatureOperation(finalTemperature, speed, operationType);
+        TemperatureOperation temperatureOperation = new CoolingTemperatureOperation(finalTemperature, speed, operationType, temperatureService);
         return temperatureOperation;
     }
 

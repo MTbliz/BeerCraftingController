@@ -12,6 +12,8 @@ import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
+import service.BottlingService;
+import service.bottlingServiceImplementation.BottlingServiceImplementation;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -48,8 +50,9 @@ class FillBottleOperationRepositoryTest {
 
     @BeforeEach
     public void setUp() {
+        BottlingService bottlingService = new BottlingServiceImplementation();
         fillBottleOperations = new ArrayList<>();
-        fillBottleOperation = new FillBottleOperation(1L, BottleVolumeEnum.FIVE_HUNDRED_MILLILITERS, 1L);
+        fillBottleOperation = new FillBottleOperation(1L, BottleVolumeEnum.FIVE_HUNDRED_MILLILITERS, 1L, bottlingService);
         fillBottleOperations.add(fillBottleOperation);
     }
 

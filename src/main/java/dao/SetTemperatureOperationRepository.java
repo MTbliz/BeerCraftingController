@@ -1,6 +1,7 @@
 package dao;
 
 import entity.temperatureOperations.SetTemperatureOperation;
+import service.TemperatureService;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -8,7 +9,17 @@ import java.util.List;
 
 public class SetTemperatureOperationRepository {
 
-    DbConnector dbConnector = new DbConnector();
+    DbConnector dbConnector;
+
+    TemperatureService temperatureService;
+
+    public SetTemperatureOperationRepository() {
+    }
+
+    public SetTemperatureOperationRepository(DbConnector dbConnector, TemperatureService temperatureService) {
+        this.dbConnector = dbConnector;
+        this.temperatureService = temperatureService;
+    }
 
     public List<SetTemperatureOperation> getAllSetTemperatureOperations() {
         List<SetTemperatureOperation> setTemperatureOperations = new ArrayList<>();
@@ -24,7 +35,7 @@ public class SetTemperatureOperationRepository {
                 double temperature = resultSet.getDouble("temperature");
                 String operationType = resultSet.getString("operation_type");
                 Long program_id = resultSet.getLong("program_id");
-                setTemperatureOperation = new SetTemperatureOperation(id, temperature, operationType, program_id);
+                setTemperatureOperation = new SetTemperatureOperation(id, temperature, operationType, program_id, temperatureService);
                 setTemperatureOperations.add(setTemperatureOperation);
             }
         } catch (SQLException e) {
@@ -48,7 +59,7 @@ public class SetTemperatureOperationRepository {
                 double temperature = resultSet.getDouble("temperature");
                 String operationType = resultSet.getString("operation_type");
                 Long program_id = resultSet.getLong("program_id");
-                setTemperatureOperation = new SetTemperatureOperation(id, temperature, operationType, program_id);
+                setTemperatureOperation = new SetTemperatureOperation(id, temperature, operationType, program_id, temperatureService);
                 setTemperatureOperations.add(setTemperatureOperation);
             }
         } catch (SQLException e) {
@@ -70,7 +81,7 @@ public class SetTemperatureOperationRepository {
                 double temperature = resultSet.getDouble("temperature");
                 String operationType = resultSet.getString("operation_type");
                 Long program_id = resultSet.getLong("program_id");
-                setTemperatureOperation = new SetTemperatureOperation(id, temperature, operationType, program_id);
+                setTemperatureOperation = new SetTemperatureOperation(id, temperature, operationType, program_id, temperatureService);
             }
         } catch (SQLException e) {
             e.printStackTrace();

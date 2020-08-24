@@ -11,6 +11,8 @@ import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
+import service.KeggingService;
+import service.keggingServiceImplementation.KeggingServiceImplementation;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -47,8 +49,9 @@ class FillKegOperationRepositoryTest {
 
     @BeforeEach
     public void setUp() {
+        KeggingService keggingService = new KeggingServiceImplementation();
         fillKegOperations = new ArrayList<>();
-        fillKegOperation = new FillKegOperation(1L, KegVolumeEnum.TWENTY_LITERS, 1L);
+        fillKegOperation = new FillKegOperation(1L, KegVolumeEnum.TWENTY_LITERS, 1L, keggingService);
         fillKegOperations.add(fillKegOperation);
     }
 

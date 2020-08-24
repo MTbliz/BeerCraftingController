@@ -14,13 +14,32 @@ import java.util.stream.Collectors;
 
 public class ProgramRepository {
 
-    DbConnector dbConnector = new DbConnector();
-    HeatingTemperatureOperationRepository heatingTemperatureOperationRepository = new HeatingTemperatureOperationRepository();
-    CoolingTemperatureOperationRepository coolingTemperatureOperationRepository = new CoolingTemperatureOperationRepository();
-    KeepTemperatureOperationRepository keepTemperatureOperationRepository = new KeepTemperatureOperationRepository();
-    SetTemperatureOperationRepository setTemperatureOperationRepository = new SetTemperatureOperationRepository();
-    FillKegOperationRepository fillKegOperationRepository = new FillKegOperationRepository();
-    FillBottleOperationRepository fillBottleOperationRepository = new FillBottleOperationRepository();
+    DbConnector dbConnector;
+    HeatingTemperatureOperationRepository heatingTemperatureOperationRepository;
+    CoolingTemperatureOperationRepository coolingTemperatureOperationRepository;
+    KeepTemperatureOperationRepository keepTemperatureOperationRepository;
+    SetTemperatureOperationRepository setTemperatureOperationRepository;
+    FillKegOperationRepository fillKegOperationRepository;
+    FillBottleOperationRepository fillBottleOperationRepository;
+
+    public ProgramRepository() {
+    }
+
+    public ProgramRepository(DbConnector dbConnector,
+                             HeatingTemperatureOperationRepository heatingTemperatureOperationRepository,
+                             CoolingTemperatureOperationRepository coolingTemperatureOperationRepository,
+                             KeepTemperatureOperationRepository keepTemperatureOperationRepository,
+                             SetTemperatureOperationRepository setTemperatureOperationRepository,
+                             FillKegOperationRepository fillKegOperationRepository,
+                             FillBottleOperationRepository fillBottleOperationRepository) {
+        this.dbConnector = dbConnector;
+        this.heatingTemperatureOperationRepository = heatingTemperatureOperationRepository;
+        this.coolingTemperatureOperationRepository = coolingTemperatureOperationRepository;
+        this.keepTemperatureOperationRepository = keepTemperatureOperationRepository;
+        this.setTemperatureOperationRepository = setTemperatureOperationRepository;
+        this.fillKegOperationRepository = fillKegOperationRepository;
+        this.fillBottleOperationRepository = fillBottleOperationRepository;
+    }
 
     public List<Program> getAllPrograms() {
         List<Program> programs = new ArrayList<>();
@@ -108,6 +127,9 @@ public class ProgramRepository {
                 beerPackageOperations.addAll(fillBottleOperationRepository.getAllFillBottleOperationsByProgramId(id));
                 beerPackageOperations.addAll(fillKegOperationRepository.getAllFillKegOperationsByProgramId(id));
             }
+            //Sort mashing and fermentation operations
+            mashingOperations.sort(Comparator.comparing((tempOperation -> tempOperation.getId())));
+            fermentationOperations.sort(Comparator.comparing((tempOperation -> tempOperation.getId())));
             program = new Program(programId, programName, mashingOperations, fermentationOperations, beerPackageOperations);
         } catch (SQLException e) {
             e.printStackTrace();

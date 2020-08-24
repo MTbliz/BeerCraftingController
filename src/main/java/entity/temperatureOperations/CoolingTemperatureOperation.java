@@ -2,31 +2,37 @@ package entity.temperatureOperations;
 
 import entity.beerComponents.BeerComponent;
 import service.TemperatureService;
-import service.temperatureServiceImplementation.TemperatureServiceImplementation;
 
 public class CoolingTemperatureOperation extends TemperatureOperation {
     Long id;
-    TemperatureService temperatureService = new TemperatureServiceImplementation();
+    TemperatureService temperatureService;
     String operationName = "Cooling";
     double finalTemperature;
     double speed;
     String operationType;
     Long program_id;
 
-    public CoolingTemperatureOperation(){}
+    public CoolingTemperatureOperation() {
+    }
 
-    public CoolingTemperatureOperation(double finalTemperature, double speed, String operationType) {
+    public CoolingTemperatureOperation(TemperatureService temperatureService) {
+        this.temperatureService = temperatureService;
+    }
+
+    public CoolingTemperatureOperation(double finalTemperature, double speed, String operationType, TemperatureService temperatureService) {
         this.finalTemperature = finalTemperature;
         this.speed = speed;
         this.operationType = operationType;
+        this.temperatureService = temperatureService;
     }
 
-    public CoolingTemperatureOperation(Long id, double finalTemperature, double speed, String operationType, Long program_id) {
+    public CoolingTemperatureOperation(Long id, double finalTemperature, double speed, String operationType, Long program_id, TemperatureService temperatureService) {
         this.operationType = operationType;
         this.id = id;
         this.finalTemperature = finalTemperature;
         this.speed = speed;
         this.program_id = program_id;
+        this.temperatureService = temperatureService;
     }
 
     public Long getId() {
@@ -47,6 +53,10 @@ public class CoolingTemperatureOperation extends TemperatureOperation {
 
     public String getOperationType() {
         return operationType;
+    }
+
+    public void setOperationName(String operationName) {
+        this.operationName = operationName;
     }
 
     public void setProgram_id(Long program_id) {

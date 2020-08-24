@@ -1,0 +1,24 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <bean id="coolingTemperatureOperation" class="entity.temperatureOperations.CoolingTemperatureOperation">
+        <constructor-arg ref="temperatureService"/>
+    </bean>
+
+    <bean id="heatingTemperatureOperation" class="entity.temperatureOperations.HeatingTemperatureOperation">
+        <constructor-arg ref="temperatureService"/>
+    </bean>
+
+    <bean id="keepTemperatureOperation" class="entity.temperatureOperations.KeepTemperatureOperation">
+        <constructor-arg ref="temperatureService"/>
+    </bean>
+
+    <bean id="setTemperatureOperation" class="entity.temperatureOperations.SetTemperatureOperation">
+        <constructor-arg ref="temperatureService"/>
+    </bean>
+</beans>

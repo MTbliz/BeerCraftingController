@@ -3,8 +3,9 @@ package view;
 import entity.beerComponents.BeerComponent;
 import entity.beerPackageOperations.*;
 import entity.beerpackages.BeerPackage;
-import entity.temperatureOperations.TemperatureOperation;
 import exception.OperationNotExistException;
+import service.BottlingService;
+import service.KeggingService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +13,20 @@ import java.util.Optional;
 import java.util.Scanner;
 
 public class BottlingInterface {
+
+    KeggingService keggingService;
+
+    BottlingService bottlingService;
+
     List<BeerPackageOperation> beerPackageOperations = new ArrayList<>();
+
+    public BottlingInterface() {
+    }
+
+    public BottlingInterface(KeggingService keggingService, BottlingService bottlingService) {
+        this.keggingService = keggingService;
+        this.bottlingService = bottlingService;
+    }
 
     public List<BeerPackageOperation> getBeerPackageOperations() {
         return beerPackageOperations;
@@ -37,19 +51,19 @@ public class BottlingInterface {
         BeerPackageOperation beerPackageOperation = null;
         switch (choice) {
             case "1": {
-                beerPackageOperation = new FillKegOperation(KegVolumeEnum.THIRTY_LITERS);
+                beerPackageOperation = new FillKegOperation(KegVolumeEnum.THIRTY_LITERS, keggingService);
                 break;
             }
             case "2": {
-                beerPackageOperation = new FillKegOperation(KegVolumeEnum.TWENTY_LITERS);
+                beerPackageOperation = new FillKegOperation(KegVolumeEnum.TWENTY_LITERS, keggingService);
                 break;
             }
             case "3": {
-                beerPackageOperation = new FillBottleOperation(BottleVolumeEnum.THREE_HUNDRED_MILLILITERS);
+                beerPackageOperation = new FillBottleOperation(BottleVolumeEnum.THREE_HUNDRED_MILLILITERS, bottlingService);
                 break;
             }
             case "4": {
-                beerPackageOperation = new FillBottleOperation(BottleVolumeEnum.FIVE_HUNDRED_MILLILITERS);
+                beerPackageOperation = new FillBottleOperation(BottleVolumeEnum.FIVE_HUNDRED_MILLILITERS, bottlingService);
                 break;
             }
             case "5":
@@ -89,7 +103,7 @@ public class BottlingInterface {
     public List<BeerPackage> performBottlingProgram(BeerComponent bear, double liquidVolume) throws InterruptedException {
         List<BeerPackage> beerPackages = new ArrayList<>();
         for (BeerPackageOperation o : beerPackageOperations) {
-             beerPackages = o.runProgram(bear, liquidVolume);
+            beerPackages = o.runProgram(bear, liquidVolume);
         }
         System.out.println();
         System.out.println("The Bottling program successfully finished");
@@ -102,11 +116,11 @@ public class BottlingInterface {
         System.out.println();
     }
 
-    public void clearProgram(){
+    public void clearProgram() {
         beerPackageOperations.clear();
     }
 
-    public void  setBeerPackageOperations(List<BeerPackageOperation> operations){
+    public void setBeerPackageOperations(List<BeerPackageOperation> operations) {
         beerPackageOperations = operations;
     }
 
@@ -153,19 +167,19 @@ public class BottlingInterface {
         choice = new Scanner(System.in).nextLine();
         switch (choice) {
             case "1": {
-                beerPackageOperation = new FillKegOperation(KegVolumeEnum.THIRTY_LITERS);
+                beerPackageOperation = new FillKegOperation(KegVolumeEnum.THIRTY_LITERS, keggingService);
                 break;
             }
             case "2": {
-                beerPackageOperation = new FillKegOperation(KegVolumeEnum.TWENTY_LITERS);
+                beerPackageOperation = new FillKegOperation(KegVolumeEnum.TWENTY_LITERS, keggingService);
                 break;
             }
             case "3": {
-                beerPackageOperation = new FillBottleOperation(BottleVolumeEnum.THREE_HUNDRED_MILLILITERS);
+                beerPackageOperation = new FillBottleOperation(BottleVolumeEnum.THREE_HUNDRED_MILLILITERS, bottlingService);
                 break;
             }
             case "4": {
-                beerPackageOperation = new FillBottleOperation(BottleVolumeEnum.FIVE_HUNDRED_MILLILITERS);
+                beerPackageOperation = new FillBottleOperation(BottleVolumeEnum.FIVE_HUNDRED_MILLILITERS, bottlingService);
                 break;
             }
         }

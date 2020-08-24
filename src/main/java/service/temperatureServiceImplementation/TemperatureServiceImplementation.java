@@ -54,8 +54,8 @@ public class TemperatureServiceImplementation implements TemperatureService {
     }
 
     @Override
-    public BeerComponent setTemperature(BeerComponent beerComponent, double temperature) throws InterruptedException {
-        if(beerComponent.getTemperature() == 0.0){
+    public BeerComponent setTemperature(BeerComponent beerComponent, double temperature) {
+        if (beerComponent.getTemperature() == 0.0) {
             beerComponent.setTemperature(temperature);
         } else {
             System.out.println("The Operation ignored. The Temperature has been set before.");

@@ -8,6 +8,7 @@ import entity.temperatureOperations.HeatingTemperatureOperation;
 import entity.temperatureOperations.KeepTemperatureOperation;
 import entity.temperatureOperations.SetTemperatureOperation;
 import exception.OperationNotExistException;
+import service.TemperatureService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +17,18 @@ import java.util.Scanner;
 
 public class FermentationInterface {
 
+    TemperatureService temperatureService;
+
     String operationType = "Fermentation";
 
     List<TemperatureOperation> temperatureOperations = new ArrayList<>();
+
+    public FermentationInterface() {
+    }
+
+    public FermentationInterface(TemperatureService temperatureService) {
+        this.temperatureService = temperatureService;
+    }
 
     public List<TemperatureOperation> getTemperatureOperations() {
         return temperatureOperations;
@@ -107,11 +117,11 @@ public class FermentationInterface {
         System.out.println();
     }
 
-    public void clearProgram(){
+    public void clearProgram() {
         temperatureOperations.clear();
     }
 
-    public void  setTemperatureOperations(List<TemperatureOperation> operations){
+    public void setTemperatureOperations(List<TemperatureOperation> operations) {
         temperatureOperations = operations;
     }
 
@@ -119,7 +129,7 @@ public class FermentationInterface {
         double temperature;
         System.out.println("Set Initial temperature (°C)");
         temperature = new Scanner(System.in).nextDouble();
-        TemperatureOperation temperatureOperation = new SetTemperatureOperation(temperature, operationType);
+        TemperatureOperation temperatureOperation = new SetTemperatureOperation(temperature, operationType, temperatureService);
         return temperatureOperation;
     }
 
@@ -130,7 +140,7 @@ public class FermentationInterface {
         finalTemperature = new Scanner(System.in).nextDouble();
         System.out.println("Set speed (°C/h)");
         speed = new Scanner(System.in).nextDouble();
-        TemperatureOperation temperatureOperation = new HeatingTemperatureOperation(finalTemperature, speed, operationType);
+        TemperatureOperation temperatureOperation = new HeatingTemperatureOperation(finalTemperature, speed, operationType, temperatureService);
         return temperatureOperation;
     }
 
@@ -138,7 +148,7 @@ public class FermentationInterface {
         int mins;
         System.out.println("Set time to keep (mins)");
         mins = new Scanner(System.in).nextInt();
-        TemperatureOperation temperatureOperation = new KeepTemperatureOperation(mins, operationType);
+        TemperatureOperation temperatureOperation = new KeepTemperatureOperation(mins, operationType, temperatureService);
         return temperatureOperation;
     }
 
@@ -149,7 +159,7 @@ public class FermentationInterface {
         finalTemperature = new Scanner(System.in).nextDouble();
         System.out.println("Set speed (°C/h)");
         speed = new Scanner(System.in).nextDouble();
-        TemperatureOperation temperatureOperation = new CoolingTemperatureOperation(finalTemperature, speed, operationType);
+        TemperatureOperation temperatureOperation = new CoolingTemperatureOperation(finalTemperature, speed, operationType, temperatureService);
         return temperatureOperation;
     }
 

@@ -2,6 +2,7 @@ package dao;
 
 import entity.beerPackageOperations.BottleVolumeEnum;
 import entity.beerPackageOperations.FillBottleOperation;
+import service.BottlingService;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -9,7 +10,18 @@ import java.util.List;
 
 public class FillBottleOperationRepository {
 
-    DbConnector dbConnector = new DbConnector();
+    DbConnector dbConnector;
+
+    BottlingService bottlingService;
+
+
+    public FillBottleOperationRepository() {
+    }
+
+    public FillBottleOperationRepository(DbConnector dbConnector, BottlingService bottlingService) {
+        this.dbConnector = dbConnector;
+        this.bottlingService = bottlingService;
+    }
 
     public List<FillBottleOperation> getAllFillBottleOperations() {
         List<FillBottleOperation> fillBottleOperations = new ArrayList<>();
@@ -25,7 +37,7 @@ public class FillBottleOperationRepository {
                 String bottle_volume_enum = resultSet.getString("bottle_volume_enum");
                 Long program_id = resultSet.getLong("program_id");
                 BottleVolumeEnum bottleVolumeEnum = BottleVolumeEnum.valueOf(bottle_volume_enum);
-                fillBottleOperation = new FillBottleOperation(id, bottleVolumeEnum, program_id);
+                fillBottleOperation = new FillBottleOperation(id, bottleVolumeEnum, program_id, bottlingService);
                 fillBottleOperations.add(fillBottleOperation);
             }
         } catch (SQLException e) {
@@ -49,7 +61,7 @@ public class FillBottleOperationRepository {
                 String bottle_volume_enum = resultSet.getString("bottle_volume_enum");
                 Long program_id = resultSet.getLong("program_id");
                 BottleVolumeEnum bottleVolumeEnum = BottleVolumeEnum.valueOf(bottle_volume_enum);
-                fillBottleOperation = new FillBottleOperation(id, bottleVolumeEnum, program_id);
+                fillBottleOperation = new FillBottleOperation(id, bottleVolumeEnum, program_id, bottlingService);
                 fillBottleOperations.add(fillBottleOperation);
             }
         } catch (SQLException e) {
@@ -71,7 +83,7 @@ public class FillBottleOperationRepository {
                 String bottle_volume_enum = resultSet.getString("bottle_volume_enum");
                 Long program_id = resultSet.getLong("program_id");
                 BottleVolumeEnum bottleVolumeEnum = BottleVolumeEnum.valueOf(bottle_volume_enum);
-                fillBottleOperation = new FillBottleOperation(id, bottleVolumeEnum, program_id);
+                fillBottleOperation = new FillBottleOperation(id, bottleVolumeEnum, program_id, bottlingService);
             }
         } catch (SQLException e) {
             e.printStackTrace();

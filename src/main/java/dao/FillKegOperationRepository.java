@@ -4,6 +4,7 @@ import entity.beerPackageOperations.BottleVolumeEnum;
 import entity.beerPackageOperations.FillBottleOperation;
 import entity.beerPackageOperations.FillKegOperation;
 import entity.beerPackageOperations.KegVolumeEnum;
+import service.KeggingService;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -11,7 +12,17 @@ import java.util.List;
 
 public class FillKegOperationRepository {
 
-    DbConnector dbConnector = new DbConnector();
+    DbConnector dbConnector;
+
+    KeggingService keggingService;
+
+    public FillKegOperationRepository() {
+    }
+
+    public FillKegOperationRepository(DbConnector dbConnector, KeggingService keggingService) {
+        this.dbConnector = dbConnector;
+        this.keggingService = keggingService;
+    }
 
     public List<FillKegOperation> getAllFillKegOperations() {
         List<FillKegOperation> fillKegOperations = new ArrayList<>();
@@ -27,7 +38,7 @@ public class FillKegOperationRepository {
                 String keg_volume_enum = resultSet.getString("keg_volume_enum");
                 Long program_id = resultSet.getLong("program_id");
                 KegVolumeEnum kegVolumeEnum = KegVolumeEnum.valueOf(keg_volume_enum);
-                fillKegOperation = new FillKegOperation(id, kegVolumeEnum, program_id);
+                fillKegOperation = new FillKegOperation(id, kegVolumeEnum, program_id, keggingService);
                 fillKegOperations.add(fillKegOperation);
             }
         } catch (SQLException e) {
@@ -50,7 +61,7 @@ public class FillKegOperationRepository {
                 String keg_volume_enum = resultSet.getString("keg_volume_enum");
                 Long program_id = resultSet.getLong("program_id");
                 KegVolumeEnum kegVolumeEnum = KegVolumeEnum.valueOf(keg_volume_enum);
-                fillKegOperation = new FillKegOperation(id, kegVolumeEnum, program_id);
+                fillKegOperation = new FillKegOperation(id, kegVolumeEnum, program_id, keggingService);
                 fillKegOperations.add(fillKegOperation);
             }
         } catch (SQLException e) {
@@ -72,7 +83,7 @@ public class FillKegOperationRepository {
                 String keg_volume_enum = resultSet.getString("keg_volume_enum");
                 Long program_id = resultSet.getLong("program_id");
                 KegVolumeEnum kegVolumeEnum = KegVolumeEnum.valueOf(keg_volume_enum);
-                fillKegOperation = new FillKegOperation(id, kegVolumeEnum, program_id);
+                fillKegOperation = new FillKegOperation(id, kegVolumeEnum, program_id, keggingService);
             }
         } catch (SQLException e) {
             e.printStackTrace();
